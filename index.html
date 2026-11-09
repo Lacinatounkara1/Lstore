@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>APK Store</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0f1214">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+:root{--bg:#f4f6f5;--card:#fff;--text:#16191c;--muted:#5d666e;--accent:#0b9a5c;--on:#fff;--border:#e0e5e2;--star:#f5a623;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1214;--card:#1a1e21;--text:#eceff1;--muted:#97a0a8;--accent:#2fd584;--on:#06210f;--border:#2a3035;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1214;--card:#1a1e21;--text:#eceff1;--muted:#97a0a8;--accent:#2fd584;--on:#06210f;--border:#2a3035;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.4}
+main{max-width:640px;margin:0 auto;padding:0 16px 40px}
+header{display:flex;align-items:center;justify-content:space-between;padding:14px 0 10px}
+.logo{font-weight:800;letter-spacing:.5px;font-size:1.15rem}.logo b{color:var(--accent)}
+.mine{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:18px;padding:7px 14px;font-weight:600;font-size:.85rem;cursor:pointer}
+h1{font-size:1.3rem;margin:14px 0 4px}h2{font-size:1.1rem;margin:0}h3{font-size:.95rem;margin:14px 0 8px}
+.sub{color:var(--muted);font-size:.9rem;margin:0 0 12px}
+input{width:100%;padding:12px 16px;border:1px solid var(--border);border-radius:24px;background:var(--card);color:var(--text);font-size:1rem;margin-bottom:10px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}
+.chip{flex:none;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:16px;padding:6px 13px;font-size:.82rem;cursor:pointer;transition:.2s}
+.chip.on{background:var(--accent);color:var(--on);border-color:var(--accent);font-weight:600}
+.links{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+.links button{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:14px;padding:12px 4px;font-size:.76rem;font-weight:600;cursor:pointer;transition:transform .15s}
+.links button:active{transform:scale(.95)}
+section{margin-top:22px}
+.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.all{background:none;border:0;color:var(--accent);font-weight:600;font-size:.85rem;cursor:pointer}
+.row{display:flex;gap:12px;overflow-x:auto;padding:4px 0 8px;scroll-snap-type:x proximity}
+.row.grid{flex-wrap:wrap;overflow:visible}
+.tile{width:84px;flex:none;text-align:center;cursor:pointer;scroll-snap-align:start;opacity:0;animation:up .45s ease forwards;animation-delay:calc(var(--i)*55ms)}
+.tile:active .ico{transform:scale(.92)}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.ico{width:76px;height:76px;border-radius:19px;display:flex;align-items:center;justify-content:center;font-size:2.2rem;margin:0 auto 6px;box-shadow:0 2px 8px rgba(0,0,0,.2);transition:transform .15s}
+.ico.big{width:84px;height:84px;font-size:2.6rem;margin:0;flex:none}
+.ico{color:#fff;font-weight:800;text-shadow:0 1px 3px rgba(0,0,0,.35)}
+.tn{font-size:.78rem;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tm{font-size:.7rem;color:var(--muted)}
+.col{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.col button{text-align:left;background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:14px;padding:12px;cursor:pointer;transition:transform .15s}
+.col button:active{transform:scale(.96)}.col b{display:block;font-size:.9rem}.col span{color:var(--muted);font-size:.78rem}
+.btn{position:relative;overflow:hidden;background:var(--accent);color:var(--on);border:0;border-radius:18px;padding:9px 16px;font-size:.85rem;font-weight:600;cursor:pointer;flex:none;transition:transform .15s}
+.btn:active{transform:scale(.94)}.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--border)}
+.btn.load::after{content:"";position:absolute;left:0;bottom:0;height:3px;background:var(--on);animation:bar 1s linear forwards}
+@keyframes bar{from{width:0}to{width:100%}}
+.badge{background:#d93025;color:#fff;border-radius:9px;font-size:.7rem;padding:1px 6px;margin-left:5px}
+.card{display:flex;gap:12px;align-items:center;padding:10px 0;cursor:pointer;animation:up .4s ease both}
+.info{flex:1;min-width:0}.name{font-weight:600}.meta{color:var(--muted);font-size:.8rem}
+.fab{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:54px;height:54px;border-radius:16px;border:0;background:var(--accent);color:var(--on);font-size:1.8rem;box-shadow:0 4px 12px rgba(0,0,0,.35);cursor:pointer;z-index:4;transition:transform .2s}
+.fab:active{transform:scale(.9) rotate(90deg)}
+.back{position:fixed;inset:0;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .3s;z-index:8}.back.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-height:88%;overflow-y:auto;background:var(--bg);border-radius:22px 22px 0 0;padding:20px 16px calc(24px + env(safe-area-inset-bottom,0px));transform:translateY(100%);transition:transform .35s cubic-bezier(.2,.8,.2,1);z-index:9;max-width:640px;margin:0 auto}.sheet.on{transform:none}
+.head{display:flex;gap:14px;align-items:center;margin-bottom:14px}
+.stars button{background:none;border:0;font-size:1.7rem;color:var(--border);cursor:pointer;padding:0 2px}.stars button.on{color:var(--star);animation:pop .3s}
+@keyframes pop{50%{transform:scale(1.4)}}
+.rev{background:var(--card);border-radius:12px;padding:10px 12px;margin-bottom:8px;animation:up .35s ease}
+.sheet input{border-radius:12px}
+.empty{text-align:center;color:var(--muted);padding:24px}
+footer{margin-top:30px;color:var(--muted);font-size:.78rem;text-align:center}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.tile{opacity:1}}
+</style>
+</head>
+<body>
+<main>
+  <header><div class="logo">APK<b>STORE</b></div><button class="mine" id="mb">Mes apps<span id="bd"></span></button></header>
+  <div id="home">
+    <input id="q" type="search" placeholder="Rechercher des jeux et des apps" autocomplete="off">
+    <div class="chips" id="pop"></div>
+    <div id="body"></div>
+  </div>
+  <div id="upd" hidden></div>
+  <footer>Liens officiels uniquement (Google Play et sites des éditeurs) · © 2026</footer>
+</main>
+<button class="fab" id="fab" aria-label="Ajouter une app">+</button>
+<div class="back" id="back"></div>
+<div class="sheet" id="sheet"></div>
+<script>
+var base=[
+{n:"F-Droid",d:"Le store d’apps open source",u:"https://f-droid.org/F-Droid.apk",k:"a",c:"Outils",e:"🤖",g:["#43e97b","#0a8f5a"],t:["os"]},
+{n:"NewPipe",d:"Client YouTube léger et libre",u:"https://github.com/TeamNewPipe/NewPipe/releases",k:"a",c:"Média",e:"📺",g:["#ff6a5e","#c0261b"],t:["os","priv"]},
+{n:"Signal",d:"Messagerie chiffrée (APK officiel)",u:"https://signal.org/android/apk/",k:"a",c:"Social",e:"💬",g:["#5b8cff","#2a46c9"],t:["os","priv"]},
+{n:"VLC",d:"Lecteur vidéo et audio",u:"https://www.videolan.org/vlc/download-android.html",k:"a",c:"Média",e:"🎬",g:["#ffb347","#e8710a"],t:["os","off"]},
+{n:"Organic Maps",d:"Cartes hors ligne",u:"https://github.com/organicmaps/organicmaps/releases",k:"a",c:"Outils",e:"🗺️",g:["#6fd36f","#2c8a3d"],t:["os","off","priv"]},
+{n:"Termux",d:"Terminal Linux pour Android",u:"https://github.com/termux/termux-app/releases",k:"a",c:"Outils",e:"⌨️",g:["#555b66","#1b1e24"],t:["os","off"]},
+{n:"Bitwarden",d:"Gestionnaire de mots de passe",u:"https://bitwarden.com/download/",k:"a",c:"Outils",e:"🔐",g:["#4f7cff","#1b3fa8"],t:["os","priv"]},
+{n:"Aegis",d:"Codes 2FA hors ligne",u:"https://github.com/beemdevelopment/Aegis/releases",k:"a",c:"Outils",e:"🛡️",g:["#2dd4bf","#0f766e"],t:["os","off","priv"]},
+{n:"Mindustry",d:"Jeu de stratégie et de tower defense",u:"https://github.com/Anuken/Mindustry/releases",k:"g",c:"Stratégie",e:"🏭",g:["#fbbf24","#b45309"],t:["os","off"]},
+{n:"SuperTuxKart",d:"Jeu de course de kart libre",u:"https://supertuxkart.net/Download",k:"g",c:"Course",e:"🏎️",g:["#38bdf8","#1d4ed8"],t:["os","off"]},
+{n:"Shattered Pixel Dungeon",d:"Roguelike en pixel art",u:"https://github.com/00-Evan/shattered-pixel-dungeon/releases",k:"g",c:"Aventure",e:"🗡️",g:["#a78bfa","#5b21b6"],t:["os","off"]},
+{n:"Luanti",d:"Monde de blocs libre (ex-Minetest)",u:"https://www.luanti.org/downloads/",k:"g",c:"Aventure",e:"⛏️",g:["#4ade80","#15803d"],t:["os","off"]},
+{n:"WhatsApp",d:"Messagerie et appels gratuits",u:"https://www.whatsapp.com/android",k:"a",c:"Social",e:"📞",g:["#25D366","#128C7E"],t:[]},
+{n:"Instagram",d:"Photos, vidéos et stories",u:"https://play.google.com/store/apps/details?id=com.instagram.android",k:"a",c:"Social",e:"📷",g:["#feda75","#d62976","#4f5bd5"],t:[]},
+{n:"TikTok",d:"Vidéos courtes",u:"https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically",k:"a",c:"Social",e:"♪",g:["#25f4ee","#111111"],t:[]},
+{n:"Facebook",d:"Réseau social",u:"https://play.google.com/store/apps/details?id=com.facebook.katana",k:"a",c:"Social",e:"f",g:["#1877F2","#0c4fb5"],t:[]},
+{n:"Telegram",d:"Messagerie rapide (APK officiel)",u:"https://telegram.org/android",k:"a",c:"Social",e:"✈️",g:["#37aee2","#1e96c8"],t:["os"]},
+{n:"Snapchat",d:"Snaps et discussions",u:"https://play.google.com/store/apps/details?id=com.snapchat.android",k:"a",c:"Social",e:"👻",g:["#fffc00","#f5c400"],t:[]},
+{n:"X",d:"Actualités et publications",u:"https://play.google.com/store/apps/details?id=com.twitter.android",k:"a",c:"Social",e:"𝕏",g:["#2b2b2b","#000000"],t:[]},
+{n:"YouTube",d:"Vidéos et musique",u:"https://play.google.com/store/apps/details?id=com.google.android.youtube",k:"a",c:"Média",e:"▶",g:["#ff4e45","#cc0000"],t:[]},
+{n:"Spotify",d:"Musique et podcasts",u:"https://play.google.com/store/apps/details?id=com.spotify.music",k:"a",c:"Média",e:"🎧",g:["#1ed760","#158a3e"],t:[]},
+{n:"Discord",d:"Discussions entre amis et communautés",u:"https://play.google.com/store/apps/details?id=com.discord",k:"a",c:"Social",e:"🎮",g:["#7983f5","#4752c4"],t:[]},
+{n:"GTA: San Andreas",d:"Rockstar Games · action en monde ouvert",u:"https://play.google.com/store/apps/details?id=com.rockstargames.gtasa",k:"g",c:"Action",e:"SA",g:["#f59e0b","#7c2d12"],t:[]},
+{n:"GTA: Vice City",d:"Rockstar Games · action en monde ouvert",u:"https://play.google.com/store/apps/details?id=com.rockstargames.gtavc",k:"g",c:"Action",e:"VC",g:["#ff6ec7","#6d28d9"],t:[]},
+{n:"GTA III",d:"Rockstar Games · action en monde ouvert",u:"https://play.google.com/store/apps/details?id=com.rockstargames.gta3",k:"g",c:"Action",e:"III",g:["#64748b","#1e293b"],t:[]},
+{n:"Minecraft",d:"Construis, explore, survis",u:"https://play.google.com/store/apps/details?id=com.mojang.minecraftpe",k:"g",c:"Aventure",e:"⛏️",g:["#8bc34a","#5d4037"],t:[]},
+{n:"Subway Surfers",d:"Course sans fin",u:"https://play.google.com/store/apps/details?id=com.kiloo.subwaysurf",k:"g",c:"Arcade",e:"🏃",g:["#38bdf8","#f97316"],t:[]},
+{n:"Among Us",d:"Jeu d’équipe et de déduction",u:"https://play.google.com/store/apps/details?id=com.innersloth.spacemafia",k:"g",c:"Arcade",e:"🚀",g:["#ff5a5a","#9b1c1c"],t:[]}
+];
+var pal=[["#c471f5","#7a2fd0"],["#00c6fb","#0072c6"],["#f9d423","#e08e00"],["#ff7eb3","#d6336c"]];
+var cols=[["os","Open source"],["off","Fonctionne hors ligne"],["priv","Vie privée"]];
+function ld(k,f){try{return JSON.parse(localStorage.getItem(k))||f}catch(e){return f}}
+function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+var mine=ld("mine",[]),inst=ld("inst",{}),rev=ld("rev",{}),tabs={g:"new",a:"new"},ex={},filt=null,cur=null,rate=0,view=1;
+function all(){return base.concat(mine)}
+function find(n){return all().filter(function(a){return a.n===n})[0]}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function esa(s){return esc(s).replace(/'/g,"&#39;")}
+function ico(a,b){return '<div class="ico'+(b?' big':'')+'" style="background:linear-gradient(135deg,'+a.g[0]+','+a.g[1]+')">'+a.e+'</div>'}
+function avg(n){var r=rev[n]||[];return r.length?r.reduce(function(s,x){return s+x.s},0)/r.length:null}
+function rt(n){var a=avg(n);return a===null?"Pas encore d’avis":"★ "+a.toFixed(1)+" ("+rev[n].length+")"}
+function needs(a){return a.v&&inst[a.n]!==undefined&&inst[a.n]!==a.v}
+function tile(a,i){return '<div class="tile" style="--i:'+i+'" data-n="'+esa(a.n)+'">'+ico(a)+'<div class="tn">'+esc(a.n)+'</div><div class="tm">'+(a.v?'v'+esc(a.v):'Officiel')+'</div></div>'}
+function items(k,t){
+  var l=all().filter(function(a){return a.k===k});
+  if(t==="new")return l.slice().reverse();
+  if(t==="upd")return l.filter(function(a){return a.v}).sort(function(x,y){return (y.ud||0)-(x.ud||0)});
+  if(t==="pop")return l.slice().sort(function(x,y){return (avg(y.n)||0)-(avg(x.n)||0)||((rev[y.n]||[]).length-(rev[x.n]||[]).length)});
+  return l.filter(function(a){return inst[a.n]!==undefined});
+}
+function sec(k,title,id){
+  var t=tabs[k],l=items(k,t),names={"new":"Nouveau",pop:"Populaire",upd:"Mis à jour",ins:"Installées"};
+  var h='<section id="'+id+'"><div class="sh"><h2>'+title+'</h2><button class="all" data-x="'+k+'">'+(ex[k]?'Réduire':'Tout voir')+'</button></div><div class="chips">';
+  ["new","pop","upd","ins"].forEach(function(x){h+='<button class="chip'+(x===t?' on':'')+'" data-tb="'+k+':'+x+'">'+names[x]+'</button>'});
+  return h+'</div><div class="row'+(ex[k]?' grid':'')+'" style="margin-top:8px">'+(l.map(tile).join("")||'<div class="empty" style="width:100%">Rien ici pour le moment.</div>')+'</div></section>';
+}
+function renderHome(){
+  var q=document.getElementById("q").value.trim().toLowerCase(),h="";
+  document.getElementById("pop").innerHTML=["WhatsApp","GTA","Minecraft","TikTok","Telegram"].map(function(s){return '<button class="chip" data-s="'+s+'">'+s+'</button>'}).join("");
+  if(q||filt){
+    var l=all().filter(function(a){return filt?(a.t||[]).indexOf(filt)>-1:(a.n+" "+a.d).toLowerCase().indexOf(q)>-1});
+    h='<div class="sh" style="margin-top:14px"><h2>'+(filt?cols.filter(function(c){return c[0]===filt})[0][1]:'Résultats')+'</h2>'+(filt?'<button class="all" data-back="1">← Retour</button>':'')+'</div><div class="row grid">'+(l.map(tile).join("")||'<div class="empty" style="width:100%">Aucune app trouvée.</div>')+'</div>';
+  }else{
+    h='<h1>Jeux et apps Android — téléchargements gratuits</h1><p class="sub">Un catalogue d’apps et de jeux populaires, avec liens officiels. Nouveautés, populaires et mises à jour.</p>';
+    h+='<div class="links"><button data-go="sg">🎮 Jeux</button><button data-go="sa">📱 Apps</button><button data-go="sc">📚 Collections</button><button data-upm="1">🔄 Mises à jour</button></div>';
+    h+=sec("g","Jeux","sg")+sec("a","Apps","sa");
+    h+='<section id="sc"><div class="sh"><h2>Collections</h2></div><div class="col">'+cols.map(function(c){var n=all().filter(function(a){return (a.t||[]).indexOf(c[0])>-1}).length;return '<button data-f="'+c[0]+'"><b>'+c[1]+'</b><span>'+n+' apps et jeux</span></button>'}).join("")+'</div></section>';
+  }
+  document.getElementById("body").innerHTML=h;
+}
+function renderUpd(){
+  var l=all().filter(function(a){return inst[a.n]!==undefined}),u=l.filter(needs),ok=l.filter(function(a){return !needs(a)});
+  document.getElementById("bd").innerHTML=u.length?'<span class="badge">'+u.length+'</span>':"";
+  function row(a,i,up){return '<div class="card" style="animation-delay:'+i*60+'ms" data-n="'+esa(a.n)+'">'+ico(a)+'<div class="info"><div class="name">'+esc(a.n)+'</div><div class="meta">Version installée : '+esc(inst[a.n])+(up?' → '+esc(a.v):'')+'</div></div><button class="btn'+(up?'':' ghost')+'" data-up="'+esa(a.n)+'">'+(up?'Mettre à jour':'Vérifier')+'</button></div>'}
+  var h='<h1>Mes apps</h1>'+(l.length?"":'<div class="empty">Aucune app installée pour le moment.</div>');
+  if(u.length)h+='<h3>Mises à jour disponibles</h3>'+u.map(function(a,i){return row(a,i,1)}).join("");
+  if(ok.length)h+='<h3>Installées</h3>'+ok.map(function(a,i){return row(a,i,0)}).join("");
+  document.getElementById("upd").innerHTML=h;
+}
+function renderAll(){renderHome();renderUpd()}
+function setView(v){view=v;document.getElementById("home").hidden=v!==1;document.getElementById("upd").hidden=v!==2;document.getElementById("fab").hidden=v!==1;document.getElementById("mb").firstChild&&0;document.querySelector(".mine").firstChild.nodeValue=v===1?"Mes apps":"Accueil";renderAll()}
+function stars(){var h="";for(var i=1;i<=5;i++)h+='<button data-s2="'+i+'" class="'+(i<=rate?'on':'')+'">★</button>';return h}
+function openSheet(n){
+  var a=find(n);if(!a)return;cur=n;var r=rev[n]||[],isI=inst[n]!==undefined;
+  var h='<div class="head">'+ico(a,1)+'<div><div class="name" style="font-size:1.2rem">'+esc(a.n)+'</div><div class="meta">'+esc(a.c)+' · '+rt(n)+'</div></div></div>';
+  h+='<button class="btn" style="width:100%;padding:12px" data-dl="'+esa(n)+'">'+(needs(a)?'Mettre à jour':isI?'Télécharger à nouveau':'Installer')+'</button>';
+  h+='<p>'+esc(a.d)+'</p><div class="meta">'+(a.v?'Dernière version : '+esc(a.v)+(a.ud?' ('+new Date(a.ud).toLocaleDateString("fr-FR")+')':'')+' · ':'')+'Source : '+esc(a.u.replace(/^https:\/\//,"").split("/")[0])+'</div>';
+  if(a.own)h+='<h3>Publier une mise à jour</h3><input id="nv" placeholder="Nouvelle version (ex. 1.2)"><button class="btn" data-nv="1">Publier</button>';
+  h+='<h3>Avis</h3><div class="stars" id="st">'+stars()+'</div><input id="rt" placeholder="Écris ton avis…"><button class="btn" data-rv="1">Publier l’avis</button><div style="margin-top:14px">';
+  h+=r.length?r.slice().reverse().map(function(x){return '<div class="rev"><b style="color:var(--star)">'+"★".repeat(x.s)+'</b> <span class="meta">'+esc(x.d)+'</span><div>'+esc(x.t||"")+'</div></div>'}).join(""):'<div class="meta">Sois le premier à donner ton avis.</div>';
+  document.getElementById("sheet").innerHTML=h+'</div>';
+  document.getElementById("sheet").classList.add("on");document.getElementById("back").classList.add("on");
+}
+function closeSheet(){cur=null;rate=0;document.getElementById("sheet").classList.remove("on");document.getElementById("back").classList.remove("on")}
+function addSheet(){
+  cur=null;document.getElementById("sheet").innerHTML='<h2>Ajouter ma propre app</h2><p class="sub">Elle apparaîtra dans la section Apps.</p><input id="an" placeholder="Nom de l’app"><input id="ad" placeholder="Description courte"><input id="au" type="url" placeholder="Lien de téléchargement (https://…)"><input id="av" placeholder="Version (ex. 1.0)"><button class="btn" style="width:100%;padding:12px" data-add="1">Ajouter</button>';
+  document.getElementById("sheet").classList.add("on");document.getElementById("back").classList.add("on");
+}
+function dl(n,btn){
+  var a=find(n);if(!a)return;if(btn)btn.classList.add("load");
+  window.open(a.u,"_blank","noopener");inst[n]=a.v||"installée";sv("inst",inst);
+  setTimeout(function(){renderAll();if(cur===n)openSheet(n)},1000);
+}
+document.addEventListener("click",function(e){
+  var t=e.target,b,g=function(s){return t.closest(s)};
+  if(b=g("[data-dl]")){e.stopPropagation();dl(b.getAttribute("data-dl"),b);return}
+  if(b=g("[data-up]")){e.stopPropagation();var n=b.getAttribute("data-up"),a=find(n);window.open(a.u,"_blank","noopener");if(needs(a)){inst[n]=a.v;sv("inst",inst);setTimeout(renderAll,600)}return}
+  if(b=g("[data-tb]")){var p=b.getAttribute("data-tb").split(":");tabs[p[0]]=p[1];renderHome();return}
+  if(b=g("[data-x]")){var k=b.getAttribute("data-x");ex[k]=!ex[k];renderHome();return}
+  if(b=g("[data-s]")){document.getElementById("q").value=b.getAttribute("data-s");renderHome();return}
+  if(g("[data-upm]")){setView(2);window.scrollTo(0,0);return}
+  if(b=g("[data-go]")){var el=document.getElementById(b.getAttribute("data-go"));el&&el.scrollIntoView({behavior:"smooth"});return}
+  if(b=g("[data-f]")){filt=b.getAttribute("data-f");renderHome();window.scrollTo(0,0);return}
+  if(g("[data-back]")){filt=null;renderHome();return}
+  if(b=g("[data-s2]")){rate=+b.getAttribute("data-s2");document.getElementById("st").innerHTML=stars();return}
+  if(g("[data-rv]")){if(!rate||!cur)return;var x=(rev[cur]=rev[cur]||[]);x.push({s:rate,t:document.getElementById("rt").value.trim(),d:new Date().toLocaleDateString("fr-FR")});sv("rev",rev);rate=0;var n2=cur;renderAll();openSheet(n2);return}
+  if(g("[data-nv]")){var v=document.getElementById("nv").value.trim(),a2=find(cur);if(!v||!a2)return;a2.v=v;a2.ud=Date.now();sv("mine",mine);var n3=cur;renderAll();openSheet(n3);return}
+  if(g("[data-add]")){var nn=document.getElementById("an").value.trim(),uu=document.getElementById("au").value.trim();if(!nn||!/^https:\/\//.test(uu)||find(nn))return;mine.push({n:nn,d:document.getElementById("ad").value.trim()||"App personnelle",u:uu,v:document.getElementById("av").value.trim()||undefined,ud:Date.now(),k:"a",c:"Perso",e:"📱",g:pal[mine.length%pal.length],t:[],own:1});sv("mine",mine);closeSheet();renderAll();return}
+  if(t.id==="back"){closeSheet();return}
+  if(b=g("[data-n]")){openSheet(b.getAttribute("data-n"))}
+});
+document.getElementById("q").addEventListener("input",function(){filt=null;renderHome()});
+document.getElementById("fab").addEventListener("click",addSheet);
+document.getElementById("mb").addEventListener("click",function(){setView(view===1?2:1)});
+renderAll();
+</script>
+<script>if("serviceWorker"in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}</script>
+</body>
+</html>
